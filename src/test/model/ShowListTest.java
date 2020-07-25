@@ -1,7 +1,100 @@
 package model;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShowListTest {
-    // delete or rename this class!
+    private ShowList myList;
+    private TVShow prisonBreak;
+    private TVShow goblin;
+    private TVShow hospitalPlaylist;
+    private TVShow criminalMinds;
+    private TVShow ncis;
+    private TVShow vampireDiaries;
+    private TVShow pokemon;
+    private TVShow theSimpsons;
+
+    @BeforeEach
+    public void setUp() {
+        myList = new ShowList();
+        prisonBreak = new TVShow("Prison Break", "crime");
+        goblin = new TVShow("Goblin", "kdrama");
+        hospitalPlaylist = new TVShow("Hospital Playlist", "kdrama");
+        criminalMinds = new TVShow("Criminal Minds", "crime");
+        ncis = new TVShow("NCIS", "crime");
+        vampireDiaries = new TVShow("Vampire Diaries", "romance");
+        pokemon = new TVShow("Pokemon", "anime");
+        theSimpsons = new TVShow(" The Simpsons", "sitcom");
+    }
+
+    @Test
+    public void testGetName() {
+        assertEquals("Pokemon", pokemon.getName());
+    }
+
+    @Test
+    public void testIsWatchedNotWatched() {
+        assertFalse(goblin.isWatched());
+    }
+
+    @Test
+    public void testIsWatchedWatched() {
+        ncis.watch();
+        assertTrue(ncis.isWatched());
+    }
+
+
+    @Test
+    public void testAddShowEmptyList() {
+        assertEquals(0, myList.getSize());
+        assertTrue(myList.addShow(hospitalPlaylist));
+        assertEquals(1, myList.getSize());
+    }
+
+    @Test
+    public void testAddShowMoreShows() {
+        assertEquals(0, myList.getSize());
+        assertTrue(myList.addShow(criminalMinds));
+        assertTrue(myList.addShow(pokemon));
+        assertTrue(myList.addShow(prisonBreak));
+        assertTrue(myList.addShow(vampireDiaries));
+        assertEquals(4, myList.getSize());
+    }
+
+    @Test
+    public void testRemoveDrama() {
+        assertEquals(0, myList.getSize());
+        assertTrue(myList.addShow(criminalMinds));
+        assertTrue(myList.addShow(pokemon));
+        assertTrue(myList.addShow(prisonBreak));
+        assertTrue(myList.addShow(vampireDiaries));
+        assertEquals(4, myList.getSize());
+        assertTrue(myList.removeDrama(pokemon));
+        assertEquals(3,myList.getSize());
+    }
+
+    @Test
+    public void testShowByCategoryHasResult() {
+        assertEquals(0, myList.getSize());
+        assertTrue(myList.addShow(criminalMinds));
+        assertTrue(myList.addShow(pokemon));
+        assertTrue(myList.addShow(prisonBreak));
+        assertTrue(myList.addShow(vampireDiaries));
+        assertTrue(myList.addShow(ncis));
+        assertEquals(3, myList.showByCategory("crime").getSize());
+    }
+
+    @Test
+    public void testShowByCategoryNoResult() {
+        assertTrue(myList.addShow(criminalMinds));
+        assertTrue(myList.addShow(pokemon));
+        assertTrue(myList.addShow(prisonBreak));
+        assertTrue(myList.addShow(vampireDiaries));
+        assertTrue(myList.addShow(ncis));
+        assertTrue(myList.addShow(hospitalPlaylist));
+        assertTrue(myList.addShow(goblin));
+        assertEquals(0, myList.showByCategory("horror").getSize());
+    }
 }
