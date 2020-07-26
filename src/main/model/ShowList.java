@@ -23,7 +23,7 @@ public class ShowList {
     // REQUIRED: the list is not empty
     // MODIFIES: this
     // EFFECTS: removes the specific show from the list
-    public boolean removeDrama(TVShow show) {
+    public boolean removeShow(TVShow show) {
         return this.myList.remove(show);
     }
 

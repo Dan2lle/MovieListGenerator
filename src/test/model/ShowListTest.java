@@ -29,21 +29,7 @@ class ShowListTest {
         theSimpsons = new TVShow(" The Simpsons", "sitcom");
     }
 
-    @Test
-    public void testGetName() {
-        assertEquals("Pokemon", pokemon.getName());
-    }
 
-    @Test
-    public void testIsWatchedNotWatched() {
-        assertFalse(goblin.isWatched());
-    }
-
-    @Test
-    public void testIsWatchedWatched() {
-        ncis.watch();
-        assertTrue(ncis.isWatched());
-    }
 
 
     @Test
@@ -64,14 +50,14 @@ class ShowListTest {
     }
 
     @Test
-    public void testRemoveDrama() {
+    public void testRemoveShow() {
         assertEquals(0, myList.getSize());
         assertTrue(myList.addShow(criminalMinds));
         assertTrue(myList.addShow(pokemon));
         assertTrue(myList.addShow(prisonBreak));
         assertTrue(myList.addShow(vampireDiaries));
         assertEquals(4, myList.getSize());
-        assertTrue(myList.removeDrama(pokemon));
+        assertTrue(myList.removeShow(pokemon));
         assertEquals(3,myList.getSize());
     }
 
