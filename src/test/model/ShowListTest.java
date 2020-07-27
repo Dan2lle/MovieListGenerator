@@ -50,15 +50,26 @@ class ShowListTest {
     }
 
     @Test
-    public void testRemoveShow() {
+    public void testRemoveShowIsThere() {
         assertEquals(0, myList.getSize());
         assertTrue(myList.addShow(criminalMinds));
         assertTrue(myList.addShow(pokemon));
         assertTrue(myList.addShow(prisonBreak));
         assertTrue(myList.addShow(vampireDiaries));
         assertEquals(4, myList.getSize());
-        assertTrue(myList.removeShow(pokemon));
+        assertTrue(myList.removeShow("Pokemon"));
         assertEquals(3,myList.getSize());
+    }
+
+    @Test
+    public void testRemoveShowNotThere() {
+        assertEquals(0, myList.getSize());
+        assertTrue(myList.addShow(criminalMinds));
+        assertTrue(myList.addShow(pokemon));
+        assertTrue(myList.addShow(prisonBreak));
+        assertEquals(3, myList.getSize());
+        assertFalse(myList.removeShow("Goblin"));
+        assertEquals(3, myList.getSize());
     }
 
     @Test

@@ -23,8 +23,13 @@ public class ShowList {
     // REQUIRED: the list is not empty
     // MODIFIES: this
     // EFFECTS: removes the specific show from the list
-    public boolean removeShow(TVShow show) {
-        return this.myList.remove(show);
+    public boolean removeShow(String name) {
+        for (TVShow s: this.myList) {
+            if (s.getName().equals(name)) {
+                return this.myList.remove(s);
+            }
+        }
+        return false;
     }
 
     // EFFECTS: show all tv shows of the selected category

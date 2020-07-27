@@ -6,6 +6,7 @@ import model.TVShow;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// used the TellerApp as a source for this class
 // Design your own tv show list
 public class TVBucketList {
     private Scanner input;
@@ -16,6 +17,8 @@ public class TVBucketList {
         runList();
     }
 
+    // MODIFIES: this
+    // EFFECTS: processes user input
     private void runList() {
         boolean keepGoing = true;
         String command;
@@ -83,33 +86,44 @@ public class TVBucketList {
         String category = input.next();
         TVShow show = new TVShow(name, category);
         wholeList.addShow(show);
+        System.out.println(show.getName() + " has been added.");
     }
 
     // MODIFIES: this
     // EFFECTS: remove a tv show from the list
     private void removeTVShow() {
-        System.out.println("Please enter the name of the tv show: ");
-        String name = input.next();
-        for (TVShow show: wholeList.myList) {
-            if (name.equals(show.getName())) {
-                wholeList.removeShow(show);
+        if (wholeList.myList.size() == 0) {
+            System.out.println("The list is empty :(");
+        } else {
+            System.out.println("Please enter the name of the tv show: ");
+            String name = input.next();
+            if (wholeList.removeShow(name)) {
+                System.out.println(name + " has been removed.");
+            } else {
+                System.out.println("This TV show cannot be found in the list.");
             }
         }
-        System.out.println("This movie cannot be found in the list.");
     }
 
     // MODIFIES: this
     // EFFECTS: mark a tv show as watched
     private void markAsWatched() {
-        System.out.println("Please enter the name of the tv show: ");
-        String name = input.next();
-        for (TVShow show: wholeList.myList) {
-            if (show.getName().equals(name)) {
-                show.watch();
+        if (wholeList.myList.size() == 0) {
+            System.out.println("The list is empty :(");
+        } else {
+            System.out.println("Please enter the name of the tv show: ");
+            String name = input.next();
+            for (TVShow show : wholeList.myList) {
+                if (show.getName().equals(name)) {
+                    show.watch();
+                    System.out.println("You have watched " + name);
+                } else {
+                    System.out.println("This movie cannot be found in the list.");
+                }
             }
         }
-        System.out.println("This movie cannot be found in the list.");
     }
+
 
     // EFFECTS: show all tv shows of selected category
     private void showByCategory() {
