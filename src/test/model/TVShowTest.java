@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// tests for tv shows
 public class TVShowTest {
     private TVShow goblin;
     private TVShow ncis;

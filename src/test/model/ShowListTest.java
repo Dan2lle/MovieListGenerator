@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// tests for the show list
 class ShowListTest {
     private ShowList myList;
     private TVShow prisonBreak;
@@ -93,5 +94,27 @@ class ShowListTest {
         assertTrue(myList.addShow(hospitalPlaylist));
         assertTrue(myList.addShow(goblin));
         assertEquals(0, myList.showByCategory("horror").getSize());
+    }
+
+    @Test
+    public void testMarkWatched() {
+        assertTrue(myList.addShow(criminalMinds));
+        assertTrue(myList.addShow(pokemon));
+        assertTrue(myList.addShow(prisonBreak));
+        assertTrue(myList.markShowAsWatched("Pokemon"));
+        assertTrue(pokemon.isWatched());
+        assertFalse(criminalMinds.isWatched());
+        assertFalse(prisonBreak.isWatched());
+    }
+
+    @Test
+    public void testMarkWatchedNotThere() {
+        assertTrue(myList.addShow(criminalMinds));
+        assertTrue(myList.addShow(pokemon));
+        assertTrue(myList.addShow(prisonBreak));
+        assertFalse(myList.markShowAsWatched("NCIS"));
+        assertFalse(pokemon.isWatched());
+        assertFalse(criminalMinds.isWatched());
+        assertFalse(prisonBreak.isWatched());
     }
 }

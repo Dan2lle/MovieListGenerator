@@ -15,14 +15,14 @@ public class ShowList {
     }
 
     // MODIFIES: this
-    // EFFECTS: add a show to the list
+    // EFFECTS: add a show to the list, return true if successful, false otherwise
     public boolean addShow(TVShow show) {
         return this.myList.add(show);
     }
 
     // REQUIRED: the list is not empty
     // MODIFIES: this
-    // EFFECTS: removes the specific show from the list
+    // EFFECTS: removes the specific show from the list, return true if successful, false otherwise
     public boolean removeShow(String name) {
         for (TVShow s: this.myList) {
             if (s.getName().equals(name)) {
@@ -41,5 +41,19 @@ public class ShowList {
             }
         }
         return selectedList;
+    }
+
+
+    // REQUIRES: this show has not been watched
+    // MODIFIES: this
+    // EFFECTS: mark the selected show as watched
+    public boolean markShowAsWatched(String name) {
+        for (TVShow s: this.myList) {
+            if (s.getName().equals(name)) {
+                s.watch();
+                return true;
+            }
+        }
+        return false;
     }
 }

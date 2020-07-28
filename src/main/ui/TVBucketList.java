@@ -113,13 +113,10 @@ public class TVBucketList {
         } else {
             System.out.println("Please enter the name of the tv show: ");
             String name = input.next();
-            for (TVShow show : wholeList.myList) {
-                if (show.getName().equals(name)) {
-                    show.watch();
-                    System.out.println("You have watched " + name);
-                } else {
-                    System.out.println("This movie cannot be found in the list.");
-                }
+            if (wholeList.markShowAsWatched(name)) {
+                System.out.println("You have watched " + name);
+            } else {
+                System.out.println("This movie cannot be found in the list.");
             }
         }
     }
