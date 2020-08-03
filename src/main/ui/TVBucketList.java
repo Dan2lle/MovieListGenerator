@@ -2,13 +2,20 @@ package ui;
 
 import model.ShowList;
 import model.TVShow;
+import persistence.Reader;
+import persistence.Writer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 // used the TellerApp as a source for this class
 // Design your own tv show list
 public class TVBucketList {
+    private static final String LIST_FILE = "data/realShowList";
     private Scanner input;
     ShowList wholeList;
 
@@ -24,7 +31,7 @@ public class TVBucketList {
         String command;
         input = new Scanner(System.in).useDelimiter("\n");
 
-        init();
+        loadList();
 
         while (keepGoing) {
             displayMenu();
@@ -47,7 +54,8 @@ public class TVBucketList {
         System.out.println("\ta -> add a TV show");
         System.out.println("\tr -> remove a TV show");
         System.out.println("\tm -> mark a TV show as watched");
-        System.out.println("\ts -> show all TV shows of selected category");
+        System.out.println("\tc -> show all TV shows of selected category");
+        System.out.println("\ts -> save changes to the file");
         System.out.println("\tp -> print the current list");
         System.out.println("\tq -> quit");
     }
@@ -62,12 +70,40 @@ public class TVBucketList {
             removeTVShow();
         } else if (command.equals("m")) {
             markAsWatched();
-        } else if (command.equals("s")) {
+        } else if (command.equals("c")) {
             showByCategory();
+        } else if (command.equals("s")) {
+            saveShows();
         } else if (command.equals("p")) {
             printList();
         } else {
             System.out.println("Oops selection not valid...");
+        }
+    }
+
+    // EFFECTS: saves new changes of the show list to file
+    private void saveShows() {
+        try {
+            Writer writer = new Writer(new File(LIST_FILE));
+            writer.write(wholeList);
+            writer.close();
+            System.out.println("Changes in the list saved to file " + LIST_FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to save the show list to " + LIST_FILE);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            // this is due to a programming error
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads list from LIST_FILE, if the file exists;
+    // otherwise initializes accounts with default values
+    private void loadList() {
+        try {
+            wholeList = Reader.readShows(new File(LIST_FILE));
+        } catch (IOException e) {
+            init();
         }
     }
 

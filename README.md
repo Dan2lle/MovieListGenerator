@@ -18,6 +18,5 @@ really want to watch something, I can quickly search one from the collections th
 - As a user, I want to be able to delete a TV show
 - As a user, I want to be able to see all saved TV shows of selected *categories*
 - As a user, I want to be able to mark a TV shows as **watched**
-- As a user, when I select the quit option from the application menu, 
-  I want the option to save my TV show bucket list to file
+- As a user, I want to be able to save my TV show bucket list to file
 - As a user, I want to be able to optionally load my TV show bucket list from the file when the program starts

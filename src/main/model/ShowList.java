@@ -1,9 +1,12 @@
 package model;
 
+import persistence.Saveable;
+
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 // represent a list of tv shows that added by the user
-public class ShowList {
+public class ShowList implements Saveable {
     public ArrayList<TVShow> myList;
 
     public ShowList() {
@@ -55,5 +58,13 @@ public class ShowList {
             }
         }
         return false;
+    }
+
+    @Override
+    public void save(PrintWriter printWriter) {
+        for (TVShow s : this.myList) {
+            s.save(printWriter);
+            printWriter.println();
+        }
     }
 }

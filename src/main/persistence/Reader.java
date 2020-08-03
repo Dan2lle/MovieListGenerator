@@ -11,12 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 
 // used the TellerApp as a source of code for this class
+// represents a reader that can read data of a TV show list file
 public class Reader {
     public static final String DELIMITER = ",";
 
-    // EFFECTS: returns a list of TV shows parsed from file; throws IOException
+    // EFFECTS: returns TV show list parsed from file; throws IOException
     // if an exception is raised when opening / reading from file
-    public static List<TVShow> readShows(File file) throws IOException {
+    public static ShowList readShows(File file) throws IOException {
         List<String> fileContent = readFile(file);
         return parseContent(fileContent);
     }
@@ -29,11 +30,11 @@ public class Reader {
 
     // EFFECTS: returns a list of TV shows parsed from list of strings
     // where each string contains data for one TV show
-    private static List<TVShow> parseContent(List<String> fileContent) {
-        List<TVShow> showList = new ArrayList<>();
+    private static ShowList parseContent(List<String> fileContent) {
+        ShowList showList = new ShowList();
         for (String line : fileContent) {
             ArrayList<String> lineComponents = splitString(line);
-            showList.add(parseTVShow(lineComponents));
+            showList.addShow(parseTVShow(lineComponents));
         }
         return showList;
     }
@@ -49,6 +50,11 @@ public class Reader {
     private static TVShow parseTVShow(List<String> components) {
         String name = components.get(0);
         String category = components.get(1);
-        return new TVShow(name, category);
+        boolean isWatched = Boolean.parseBoolean(components.get(2));
+        TVShow newShow = new TVShow(name, category);
+        if (isWatched) {
+            newShow.watch();
+        }
+        return newShow;
     }
 }
