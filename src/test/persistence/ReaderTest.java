@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ReaderTest {
+    Reader testReader = new Reader();
+
     @Test
     public void testParseShowsFile1() {
         try {
