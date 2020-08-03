@@ -1,14 +1,14 @@
 package persistence;
 
 import model.ShowList;
-import model.TVShow;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class ReaderTest {
     @Test
