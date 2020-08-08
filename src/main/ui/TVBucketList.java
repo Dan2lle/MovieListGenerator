@@ -5,6 +5,7 @@ import model.TVShow;
 import persistence.Reader;
 import persistence.Writer;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -81,8 +82,24 @@ public class TVBucketList {
         }
     }
 
+    // EFFECTS: create and show GUI
+    private static void createAndShowGUI(ShowList wholeList) {
+        //Create and set up the window.
+        JFrame frame = new JFrame("Your TV Show List");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //Create and set up the content pane.
+        JComponent newContentPane = new AddShowGUI(wholeList);
+        newContentPane.setOpaque(true); //content panes must be opaque
+        frame.setContentPane(newContentPane);
+
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+    }
+
     // EFFECTS: saves new changes of the show list to file
-    private void saveShows() {
+    public void saveShows() {
         try {
             Writer writer = new Writer(new File(LIST_FILE));
             writer.write(wholeList);
@@ -116,13 +133,14 @@ public class TVBucketList {
     // MODIFIES: this
     // EFFECTS: add a tv show to the list
     private void addTVShow() {
-        System.out.println("Please enter the name of the TV show: ");
-        String name = input.next();
-        System.out.println("Please enter the category of the TV show: ");
-        String category = input.next();
-        TVShow show = new TVShow(name, category);
-        wholeList.addShow(show);
-        System.out.println(show.getName() + " has been added.");
+        createAndShowGUI(wholeList);
+//        System.out.println("Please enter the name of the TV show: ");
+//        String name = input.next();
+//        System.out.println("Please enter the category of the TV show: ");
+//        String category = input.next();
+//        TVShow show = AddShowGUI.AddListener.
+//        wholeList.addShow(show);
+//        System.out.println(show.getName() + " has been added.");
     }
 
     // MODIFIES: this
