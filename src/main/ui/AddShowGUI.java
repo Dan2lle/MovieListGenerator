@@ -47,7 +47,7 @@ public class AddShowGUI extends JPanel  {
         AddListener addListener = new AddListener(addButton, saveButton);
         createList(jlist);
         createAddButton(addListener, addButton);
-        // createSaveButton(addListener, saveButton);
+        createSaveButton(addListener, saveButton);
         createTextFields(addListener);
     }
 
@@ -83,7 +83,6 @@ public class AddShowGUI extends JPanel  {
     private void createSaveButton(AddListener addListener, JButton saveButton) {
         saveButton.setActionCommand(saveString);
         saveButton.addActionListener(addListener);
-        saveButton.setEnabled(false);
     }
 
     // EFFECTS: create the text fields for name and category
@@ -136,6 +135,7 @@ public class AddShowGUI extends JPanel  {
         private boolean alreadyEnabled = false;
         private JButton button;
         private JButton saveButton;
+        private static final String SOUND_FILE = "data/Mouse Click Fast.wav";
 
         public AddListener(JButton button, JButton saveButton) {
             this.button = button;
@@ -146,6 +146,7 @@ public class AddShowGUI extends JPanel  {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == button) {
+                playSound();
                 TVShow tvShow = getTVShow();
                 checkIfUniqueName(tvShow);
                 wholeList.addShow(tvShow);
@@ -157,6 +158,7 @@ public class AddShowGUI extends JPanel  {
                 jlist.setSelectedIndex(index);
                 jlist.ensureIndexIsVisible(index);
             } else if (e.getSource() == saveButton) {
+                playSound();
                 saveShowIntoFile();
             }
         }
@@ -245,16 +247,16 @@ public class AddShowGUI extends JPanel  {
             }
         }
 
-        public void playSound(String soundName) {
+        public void playSound() {
             try {
                 AudioInputStream audioInputStream = AudioSystem
-                        .getAudioInputStream(new File(soundName).getAbsoluteFile( ));
-                Clip clip = AudioSystem.getClip( );
+                        .getAudioInputStream(new File(SOUND_FILE));
+                Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
-                clip.start( );
-            } catch(Exception ex) {
+                clip.start();
+            } catch (Exception ex) {
                 System.out.println("Error with playing sound.");
-                ex.printStackTrace( );
+                ex.printStackTrace();
             }
         }
     }

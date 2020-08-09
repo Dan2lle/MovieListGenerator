@@ -20,3 +20,11 @@ really want to watch something, I can quickly search one from the collections th
 - As a user, I want to be able to mark a TV shows as **watched**
 - As a user, I want to be able to save my TV show bucket list to file
 - As a user, I want to be able to optionally load my TV show bucket list from the file when the program starts
+
+# Instructions for Grader
+- You can generate the first required event by clicking the "Add a show" button after entering the name and category of 
+  a show
+- You can generate the second required 
+- You can trigger my audio component by clicking any button
+- You can save the state of my application by clicking the "Save the shows" button
+- You can reload the state of my application by
