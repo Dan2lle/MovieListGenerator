@@ -22,9 +22,10 @@ really want to watch something, I can quickly search one from the collections th
 - As a user, I want to be able to optionally load my TV show bucket list from the file when the program starts
 
 # Instructions for Grader
-- You can generate the first required event by clicking the "Add a show" button after entering the name and category of 
-  a show
-- You can generate the second required 
+- You can generate the first required event(add Xs to Y) by first selecting "a" in the command line and then
+  clicking the "Add a show" button in the popped out GUI window after entering the name and category of a show
+- You can generate the second required event(remove Xs from Y) by first selecting "r" in the command line and 
+  then clicking the "Remove this show" button after selecting any show in the menu list
 - You can trigger my audio component by clicking any button
-- You can save the state of my application by clicking the "Save the shows" button
-- You can reload the state of my application by
+- You can **save** the state of my application by clicking the "Save the shows" button
+- The state of the application **automatically reloads**.

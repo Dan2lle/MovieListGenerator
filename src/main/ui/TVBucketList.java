@@ -134,29 +134,23 @@ public class TVBucketList {
     // EFFECTS: add a tv show to the list
     private void addTVShow() {
         createAndShowGUI(wholeList);
-//        System.out.println("Please enter the name of the TV show: ");
-//        String name = input.next();
-//        System.out.println("Please enter the category of the TV show: ");
-//        String category = input.next();
-//        TVShow show = AddShowGUI.AddListener.
-//        wholeList.addShow(show);
-//        System.out.println(show.getName() + " has been added.");
     }
 
     // MODIFIES: this
     // EFFECTS: remove a tv show from the list
     private void removeTVShow() {
-        if (wholeList.myList.size() == 0) {
-            System.out.println("The list is empty :(");
-        } else {
-            System.out.println("Please enter the name of the tv show: ");
-            String name = input.next();
-            if (wholeList.removeShow(name)) {
-                System.out.println(name + " has been removed.");
-            } else {
-                System.out.println("This TV show cannot be found in the list.");
-            }
-        }
+//        if (wholeList.myList.size() == 0) {
+//            System.out.println("The list is empty :(");
+//        } else {
+//            System.out.println("Please enter the name of the tv show: ");
+//            String name = input.next();
+//            if (wholeList.removeShow(name)) {
+//                System.out.println(name + " has been removed.");
+//            } else {
+//                System.out.println("This TV show cannot be found in the list.");
+//            }
+//        }
+        createAndShowGUI(wholeList);
     }
 
     // MODIFIES: this

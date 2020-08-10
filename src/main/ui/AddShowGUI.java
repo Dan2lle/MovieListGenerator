@@ -26,8 +26,10 @@ public class AddShowGUI extends JPanel  {
 
     private static final String addString = "Add a show";
     private static final String saveString = "Save the shows";
+    private static final String removeString = "Remove this show";
     private JButton addButton;
     private JButton saveButton;
+    private JButton removeButton;
     private JLabel nameLabel;
     private JLabel categoryLabel;
     public JTextField showName;
@@ -42,12 +44,14 @@ public class AddShowGUI extends JPanel  {
         jlist = new JList(listModel);
         addButton = new JButton(addString);
         saveButton = new JButton(saveString);
+        removeButton = new JButton(removeString);
         nameLabel = new JLabel("Please enter the name below:");
         categoryLabel = new JLabel("Please enter the category below:");
-        AddListener addListener = new AddListener(addButton, saveButton);
+        AddListener addListener = new AddListener(addButton, removeButton, saveButton);
         createList(jlist);
         createAddButton(addListener, addButton);
         createSaveButton(addListener, saveButton);
+        createRemoveButton(addListener, removeButton);
         createTextFields(addListener);
     }
 
@@ -85,6 +89,12 @@ public class AddShowGUI extends JPanel  {
         saveButton.addActionListener(addListener);
     }
 
+    // EFFECTS: create the remove button to add a show
+    private void createRemoveButton(AddListener addListener, JButton removeButton) {
+        removeButton.setActionCommand(removeString);
+        removeButton.addActionListener(addListener);
+    }
+
     // EFFECTS: create the text fields for name and category
     private void createTextFields(AddListener addListener) {
         showName = new JTextField(15);
@@ -118,50 +128,80 @@ public class AddShowGUI extends JPanel  {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(categoryLabel).addComponent(showCategory))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(addButton).addComponent(saveButton)));
+                        .addComponent(removeButton).addComponent(addButton).addComponent(saveButton)));
     }
 
     // EFFECTS: organizes the vertical layouts for components
     private void verticalGroup(GroupLayout layout) {
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(nameLabel).addComponent(categoryLabel).addComponent(addButton))
+                        .addComponent(nameLabel).addComponent(categoryLabel).addComponent(removeButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(showName).addComponent(showCategory).addComponent(saveButton)));
+                        .addComponent(showName).addComponent(showCategory).addComponent(addButton))
+                .addComponent(saveButton));
     }
 
     // This listener is shared by the text field and the add button.
     class AddListener implements ActionListener, DocumentListener {
         private boolean alreadyEnabled = false;
-        private JButton button;
+        private JButton addButton;
+        private JButton removeButton;
         private JButton saveButton;
         private static final String SOUND_FILE = "data/Mouse Click Fast.wav";
 
-        public AddListener(JButton button, JButton saveButton) {
-            this.button = button;
+        public AddListener(JButton addButton, JButton removeButton, JButton saveButton) {
+            this.addButton = addButton;
+            this.removeButton = removeButton;
             this.saveButton = saveButton;
         }
 
         //Required by ActionListener.
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == button) {
+            if (e.getSource() == addButton) {
                 playSound();
                 TVShow tvShow = getTVShow();
                 checkIfUniqueName(tvShow);
                 wholeList.addShow(tvShow);
                 addElementAsString(tvShow, listModel);
                 resetTextField();
-
-                //Select the new item and make it visible.
-                int index = jlist.getSelectedIndex();
-                jlist.setSelectedIndex(index);
-                jlist.ensureIndexIsVisible(index);
+                selectAndVisible();
             } else if (e.getSource() == saveButton) {
                 playSound();
                 saveShowIntoFile();
+            } else if (e.getSource() == removeButton) {
+                playSound();
+                removeShow();
             }
         }
+
+        // EFFECTS: select the new item and make it visible
+        private void selectAndVisible() {
+            int index = jlist.getSelectedIndex();
+            jlist.setSelectedIndex(index);
+            jlist.ensureIndexIsVisible(index);
+        }
+
+        // EFFECTS: remove the selected show
+        private void removeShow() {
+            int index = jlist.getSelectedIndex();
+            listModel.remove(index);
+            wholeList.myList.remove(index);
+
+            int size = listModel.getSize();
+
+            if (size == 0) { //Nobody's left, disable firing.
+                removeButton.setEnabled(false);
+            } else { //Select an index.
+                if (index == listModel.getSize()) {
+                    //removed item in last position
+                    index--;
+                }
+                jlist.setSelectedIndex(index);
+                jlist.ensureIndexIsVisible(index);
+            }
+        }
+
 
         // EFFECTS: generate the input tv show
         public TVShow getTVShow() {
@@ -213,14 +253,14 @@ public class AddShowGUI extends JPanel  {
         // EFFECTS: enable the button for add a show
         private void enableButton() {
             if (!alreadyEnabled) {
-                button.setEnabled(true);
+                addButton.setEnabled(true);
             }
         }
 
         // EFFECTS:
         private boolean handleEmptyTextField(DocumentEvent e) {
             if (e.getDocument().getLength() <= 0) {
-                button.setEnabled(false);
+                addButton.setEnabled(false);
                 alreadyEnabled = false;
                 return true;
             }
