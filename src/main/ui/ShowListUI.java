@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.ShowCannotBeFoundException;
 import model.ShowList;
 import model.TVShow;
 import persistence.Reader;
@@ -10,18 +11,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 // used the TellerApp as a source for this class
 // Design your own tv show list
-public class TVBucketList {
+public class ShowListUI {
     private static final String LIST_FILE = "data/realShowList";
     private Scanner input;
     ShowList wholeList;
 
     // EFFECTS: run the tv show bucket list application
-    public TVBucketList() {
+    public ShowListUI() {
         runList();
     }
 
@@ -89,7 +89,7 @@ public class TVBucketList {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
-        JComponent newContentPane = new AddShowGUI(wholeList);
+        JComponent newContentPane = new ShowGUI(wholeList);
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
 
@@ -174,19 +174,14 @@ public class TVBucketList {
     private void showByCategory() {
         System.out.println("Please enter the TV show category: ");
         String category = input.next();
-        ShowList selectedList = new ShowList();
-        for (TVShow show: wholeList.myList) {
-            if (show.getCategory().equals(category)) {
-                selectedList.addShow(show);
-            }
-        }
-        if (selectedList.getSize() == 0) {
-            System.out.println("Cannot find TV shows of this category.");
-        } else {
+        try {
+            ShowList selectedList = wholeList.showByCategory(category);
             System.out.println(category + " TV shows found in the list are");
             for (TVShow s: selectedList.myList) {
                 System.out.println("Name: " + s.getName() + " - Watched? : " + s.isWatched());
             }
+        } catch (ShowCannotBeFoundException e) {
+            System.out.println("Cannot find TV shows of this category.");
         }
     }
 

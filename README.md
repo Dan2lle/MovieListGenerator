@@ -1,6 +1,6 @@
 # TV Show Bucket List
 
-## Always Give What You Want
+## build up your own taste
 
 This application can **collect** TV shows of every individual users' 
 choices, show the list by *category*, **delete** or mark a 
@@ -29,3 +29,9 @@ really want to watch something, I can quickly search one from the collections th
 - You can trigger my **audio** component by clicking any button
 - You can **save** the state of my application by clicking the "Save the shows" button
 - The state of the application **automatically reloads** because I think it makes more sense
+
+# Phase 4: Task 2
+- Task completed: test and design a class that is robust
+- Classes and methods involved: removeShow and showByCategory in ShowList class, their corresponding tests in the 
+  ShowListTest test class, and showByCategory in the ShowListUI class
+- Exception added: ShowCannotBeFoundException

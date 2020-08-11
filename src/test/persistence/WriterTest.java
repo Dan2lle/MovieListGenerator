@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.ShowCannotBeFoundException;
 import model.ShowList;
 import model.TVShow;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +74,11 @@ public class WriterTest {
     @Test
     void testWriteShowsRemoveShow() {
         // save TV shows to file
-        showList.removeShow("Pokemon");
+        try {
+            showList.removeShow("Pokemon");
+        } catch (ShowCannotBeFoundException e) {
+            // nothing happens;
+        }
         testWriter.write(showList);
         testWriter.close();
 

@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.ShowCannotBeFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,7 +59,11 @@ class ShowListTest {
         assertTrue(myList.addShow(prisonBreak));
         assertTrue(myList.addShow(vampireDiaries));
         assertEquals(4, myList.getSize());
-        assertTrue(myList.removeShow("Pokemon"));
+        try {
+            myList.removeShow("Pokemon");
+        } catch (ShowCannotBeFoundException e) {
+            fail("Failed where it shouldn't");
+        }
         assertEquals(3,myList.getSize());
     }
 
@@ -69,7 +74,12 @@ class ShowListTest {
         assertTrue(myList.addShow(pokemon));
         assertTrue(myList.addShow(prisonBreak));
         assertEquals(3, myList.getSize());
-        assertFalse(myList.removeShow("Goblin"));
+        try {
+            myList.removeShow("Goblin");
+            fail("Passed where it shouldn't");
+        } catch (ShowCannotBeFoundException e) {
+            // nothing happens;
+        }
         assertEquals(3, myList.getSize());
     }
 
@@ -81,7 +91,11 @@ class ShowListTest {
         assertTrue(myList.addShow(prisonBreak));
         assertTrue(myList.addShow(vampireDiaries));
         assertTrue(myList.addShow(ncis));
-        assertEquals(3, myList.showByCategory("crime").getSize());
+        try {
+            assertEquals(3, myList.showByCategory("crime").getSize());
+        } catch (ShowCannotBeFoundException e) {
+            fail("Failed where it shouldn't");
+        }
     }
 
     @Test
@@ -93,7 +107,12 @@ class ShowListTest {
         assertTrue(myList.addShow(ncis));
         assertTrue(myList.addShow(hospitalPlaylist));
         assertTrue(myList.addShow(goblin));
-        assertEquals(0, myList.showByCategory("horror").getSize());
+        try {
+            myList.showByCategory("horror").getSize();
+            fail("Passed where it shouldn't");
+        } catch (ShowCannotBeFoundException e) {
+            // nothing happens;
+        }
     }
 
     @Test

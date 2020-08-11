@@ -19,7 +19,7 @@ import javax.sound.sampled.AudioSystem;
 
 // used the ListDemo project as a source of code for this class
 // Represents a GUI for the user story of adding a show to the list
-public class AddShowGUI extends JPanel  {
+public class ShowGUI extends JPanel  {
     private static final String LIST_FILE = "data/realShowList";
     private JList jlist;
     public DefaultListModel listModel;
@@ -36,7 +36,7 @@ public class AddShowGUI extends JPanel  {
     public JTextField showCategory;
     public ShowList wholeList;
 
-    public AddShowGUI(ShowList wholeList) {
+    public ShowGUI(ShowList wholeList) {
         super(new BorderLayout());
         this.wholeList = wholeList;
         listModel = new DefaultListModel();
@@ -169,6 +169,7 @@ public class AddShowGUI extends JPanel  {
             } else if (e.getSource() == saveButton) {
                 playSound();
                 saveShowIntoFile();
+                selectAndVisible();
             } else if (e.getSource() == removeButton) {
                 playSound();
                 removeShow();

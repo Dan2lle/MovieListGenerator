@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.ShowCannotBeFoundException;
 import persistence.Saveable;
 
 import java.io.PrintWriter;
@@ -26,24 +27,28 @@ public class ShowList implements Saveable {
     // REQUIRED: the list is not empty
     // MODIFIES: this
     // EFFECTS: removes the specific show from the list, return true if successful, false otherwise
-    public boolean removeShow(String name) {
-        for (TVShow s: this.myList) {
+    public boolean removeShow(String name) throws ShowCannotBeFoundException {
+        for (TVShow s : this.myList) {
             if (s.getName().equals(name)) {
                 return this.myList.remove(s);
             }
         }
-        return false;
+        throw new ShowCannotBeFoundException();
     }
 
     // EFFECTS: show all tv shows of the selected category
-    public ShowList showByCategory(String category) {
+    public ShowList showByCategory(String category) throws ShowCannotBeFoundException {
         ShowList selectedList = new ShowList();
-        for (TVShow s: this.myList) {
+        for (TVShow s : this.myList) {
             if (category.equals(s.getCategory())) {
                 selectedList.addShow(s);
             }
         }
-        return selectedList;
+        if (selectedList.getSize() == 0) {
+            throw new ShowCannotBeFoundException();
+        } else {
+            return selectedList;
+        }
     }
 
 
