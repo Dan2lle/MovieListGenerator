@@ -17,8 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
 public class MyActionListener implements java.awt.event.ActionListener, DocumentListener {
-    public DefaultListModel listModel = new DefaultListModel();
-    public JList jlist = new JList(listModel);
+    public DefaultListModel<String> listModel = new DefaultListModel<>();
+    public JList<String> jlist = new JList<>(listModel);
     private static final String LIST_FILE = "data/realShowList";
     private boolean alreadyEnabled = false;
     private static final String addString = "Add a show";
@@ -47,7 +47,7 @@ public class MyActionListener implements java.awt.event.ActionListener, Document
     }
 
     // EFFECTS: present tv shows on the panel as readable strings
-    public void addElementAsString(TVShow tvShow, DefaultListModel listModel) {
+    public void addElementAsString(TVShow tvShow, DefaultListModel<String> listModel) {
         listModel.addElement(tvShow.display());
     }
 
