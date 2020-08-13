@@ -52,8 +52,7 @@ public class ShowListUI {
     // EFFECTS: displays menu of options to user
     private void displayMenu() {
         System.out.println("\nSelect from:");
-        System.out.println("\ta -> add a TV show");
-        System.out.println("\tr -> remove a TV show");
+        System.out.println("\ta -> add or remove a TV show");
         System.out.println("\tm -> mark a TV show as watched");
         System.out.println("\tc -> show all TV shows of selected category");
         System.out.println("\ts -> save changes to the file");
@@ -66,9 +65,7 @@ public class ShowListUI {
     // EFFECTS: processes user command
     private void processCommand(String command) {
         if (command.equals("a")) {
-            addTVShow();
-        } else if (command.equals("r")) {
-            removeTVShow();
+            createAndShowGUI(wholeList);
         } else if (command.equals("m")) {
             markAsWatched();
         } else if (command.equals("c")) {
@@ -131,29 +128,6 @@ public class ShowListUI {
     }
 
     // MODIFIES: this
-    // EFFECTS: add a tv show to the list
-    private void addTVShow() {
-        createAndShowGUI(wholeList);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: remove a tv show from the list
-    private void removeTVShow() {
-//        if (wholeList.myList.size() == 0) {
-//            System.out.println("The list is empty :(");
-//        } else {
-//            System.out.println("Please enter the name of the tv show: ");
-//            String name = input.next();
-//            if (wholeList.removeShow(name)) {
-//                System.out.println(name + " has been removed.");
-//            } else {
-//                System.out.println("This TV show cannot be found in the list.");
-//            }
-//        }
-        createAndShowGUI(wholeList);
-    }
-
-    // MODIFIES: this
     // EFFECTS: mark a tv show as watched
     private void markAsWatched() {
         if (wholeList.myList.size() == 0) {
@@ -188,8 +162,7 @@ public class ShowListUI {
     // EFFECTS: print the tv show list
     private void printList() {
         for (TVShow show: wholeList.myList) {
-            System.out.println("Name: " + show.getName() + " - Category: "
-                    + show.getCategory() + " - Watched? : " + show.isWatched());
+            System.out.println(show.display());
         }
     }
 }

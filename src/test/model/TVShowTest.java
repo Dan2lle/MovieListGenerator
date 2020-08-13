@@ -33,4 +33,9 @@ public class TVShowTest {
         ncis.watch();
         assertTrue(ncis.isWatched());
     }
+
+    @Test
+    public void testDisplay() {
+        assertEquals("Name: Goblin - Category: kdrama - Watched? : false", goblin.display());
+    }
 }

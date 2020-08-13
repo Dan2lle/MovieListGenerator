@@ -46,4 +46,8 @@ public class TVShow implements Saveable {
         printWriter.print(Reader.DELIMITER);
         printWriter.print(isWatched);
     }
+
+    public String display() {
+        return "Name: " + this.getName() + " - Category: " + this.getCategory() + " - Watched? : " + this.isWatched();
+    }
 }

@@ -2,36 +2,20 @@ package ui;
 
 import model.ShowList;
 import model.TVShow;
-import persistence.Writer;
+import persistence.Reader;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.AudioSystem;
+import java.io.IOException;
 
 // used the ListDemo project as a source of code for this class
 // Represents a GUI for the user story of adding a show to the list
 public class ShowGUI extends JPanel  {
-    private static final String LIST_FILE = "data/realShowList";
-    private JList jlist;
-    public DefaultListModel listModel;
-
-    private static final String addString = "Add a show";
-    private static final String saveString = "Save the shows";
-    private static final String removeString = "Remove this show";
-    private JButton addButton;
-    private JButton saveButton;
-    private JButton removeButton;
-    private JLabel nameLabel;
-    private JLabel categoryLabel;
+    public MyActionListener myActionListener;
+    private JLabel nameLabel = new JLabel("Please enter the name below:");
+    private JLabel categoryLabel = new JLabel("Please enter the category below:");
     public JTextField showName;
     public JTextField showCategory;
     public ShowList wholeList;
@@ -39,70 +23,18 @@ public class ShowGUI extends JPanel  {
     public ShowGUI(ShowList wholeList) {
         super(new BorderLayout());
         this.wholeList = wholeList;
-        listModel = new DefaultListModel();
-        addListModel(wholeList);
-        jlist = new JList(listModel);
-        addButton = new JButton(addString);
-        saveButton = new JButton(saveString);
-        removeButton = new JButton(removeString);
-        nameLabel = new JLabel("Please enter the name below:");
-        categoryLabel = new JLabel("Please enter the category below:");
-        AddListener addListener = new AddListener(addButton, removeButton, saveButton);
-        createList(jlist);
-        createAddButton(addListener, addButton);
-        createSaveButton(addListener, saveButton);
-        createRemoveButton(addListener, removeButton);
-        createTextFields(addListener);
-    }
-
-    // EFFECTS: initiate the JList
-    private void addListModel(ShowList showList) {
-        for (int i = 0; i < showList.myList.size(); i++) {
-            addElementAsString(showList.myList.get(i), listModel);
-        }
-    }
-
-    // EFFECTS: present tv shows on the panel as readable strings
-    public void addElementAsString(TVShow tvShow, DefaultListModel listModel) {
-        String addString = "Name: " + tvShow.getName() + " - Category: "
-                + tvShow.getCategory() + " - Is Watched? : " + tvShow.isWatched();
-        listModel.addElement(addString);
-    }
-
-    // EFFECTS: create the list and put it in a scroll pane
-    private void createList(JList jlist) {
-        jlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jlist.setSelectedIndex(0);
-        jlist.setVisibleRowCount(5);
-    }
-
-    // EFFECTS: create the add button to add a show
-    private void createAddButton(AddListener addListener, JButton addButton) {
-        addButton.setActionCommand(addString);
-        addButton.addActionListener(addListener);
-        addButton.setEnabled(false);
-    }
-
-    // EFFECTS: create the save button to add a show
-    private void createSaveButton(AddListener addListener, JButton saveButton) {
-        saveButton.setActionCommand(saveString);
-        saveButton.addActionListener(addListener);
-    }
-
-    // EFFECTS: create the remove button to add a show
-    private void createRemoveButton(AddListener addListener, JButton removeButton) {
-        removeButton.setActionCommand(removeString);
-        removeButton.addActionListener(addListener);
+        this.myActionListener = new MyActionListener(this);
+        createTextFields(this.myActionListener);
     }
 
     // EFFECTS: create the text fields for name and category
-    private void createTextFields(AddListener addListener) {
+    private void createTextFields(MyActionListener myActionListener) {
         showName = new JTextField(15);
-        showName.addActionListener(addListener);
-        showName.getDocument().addDocumentListener(addListener);
+        showName.addActionListener(myActionListener);
+        showName.getDocument().addDocumentListener(myActionListener);
         showCategory = new JTextField(15);
-        showCategory.addActionListener(addListener);
-        showCategory.getDocument().addDocumentListener(addListener);
+        showCategory.addActionListener(myActionListener);
+        showCategory.getDocument().addDocumentListener(myActionListener);
         createLayout();
     }
 
@@ -115,7 +47,7 @@ public class ShowGUI extends JPanel  {
         layout.setAutoCreateContainerGaps(true);
         horizontalGroup(layout);
         verticalGroup(layout);
-        JScrollPane listScrollPane = new JScrollPane(jlist);
+        JScrollPane listScrollPane = new JScrollPane(this.myActionListener.jlist);
         add(listScrollPane, BorderLayout.CENTER);
         add(panel, BorderLayout.PAGE_END);
     }
@@ -128,178 +60,21 @@ public class ShowGUI extends JPanel  {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(categoryLabel).addComponent(showCategory))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(removeButton).addComponent(addButton).addComponent(saveButton)));
+                        .addComponent(this.myActionListener.removeButton)
+                        .addComponent(this.myActionListener.addButton)
+                        .addComponent(this.myActionListener.saveButton)));
     }
 
     // EFFECTS: organizes the vertical layouts for components
     private void verticalGroup(GroupLayout layout) {
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(nameLabel).addComponent(categoryLabel).addComponent(removeButton))
+                        .addComponent(nameLabel).addComponent(categoryLabel)
+                        .addComponent(this.myActionListener.removeButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(showName).addComponent(showCategory).addComponent(addButton))
-                .addComponent(saveButton));
-    }
-
-    // This listener is shared by the text field and the add button.
-    class AddListener implements ActionListener, DocumentListener {
-        private boolean alreadyEnabled = false;
-        private JButton addButton;
-        private JButton removeButton;
-        private JButton saveButton;
-        private static final String SOUND_FILE = "data/Mouse Click Fast.wav";
-
-        public AddListener(JButton addButton, JButton removeButton, JButton saveButton) {
-            this.addButton = addButton;
-            this.removeButton = removeButton;
-            this.saveButton = saveButton;
-        }
-
-        //Required by ActionListener.
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == addButton) {
-                playSound();
-                TVShow tvShow = getTVShow();
-                checkIfUniqueName(tvShow);
-                wholeList.addShow(tvShow);
-                addElementAsString(tvShow, listModel);
-                resetTextField();
-                selectAndVisible();
-            } else if (e.getSource() == saveButton) {
-                playSound();
-                saveShowIntoFile();
-                selectAndVisible();
-            } else if (e.getSource() == removeButton) {
-                playSound();
-                removeShow();
-            }
-        }
-
-        // EFFECTS: select the new item and make it visible
-        private void selectAndVisible() {
-            int index = jlist.getSelectedIndex();
-            jlist.setSelectedIndex(index);
-            jlist.ensureIndexIsVisible(index);
-        }
-
-        // EFFECTS: remove the selected show
-        private void removeShow() {
-            int index = jlist.getSelectedIndex();
-            listModel.remove(index);
-            wholeList.myList.remove(index);
-
-            int size = listModel.getSize();
-
-            if (size == 0) { //Nobody's left, disable firing.
-                removeButton.setEnabled(false);
-            } else { //Select an index.
-                if (index == listModel.getSize()) {
-                    //removed item in last position
-                    index--;
-                }
-                jlist.setSelectedIndex(index);
-                jlist.ensureIndexIsVisible(index);
-            }
-        }
-
-
-        // EFFECTS: generate the input tv show
-        public TVShow getTVShow() {
-            String name = showName.getText();
-            String category = showCategory.getText();
-            TVShow tvShow = new TVShow(name, category);
-            return tvShow;
-        }
-
-        // EFFECTS: check if the user didn't type in a unique name
-        public void checkIfUniqueName(TVShow tvShow) {
-            if (tvShow.getName().equals("") || alreadyInList(tvShow.getName())) {
-                Toolkit.getDefaultToolkit().beep();
-                showName.requestFocusInWindow();
-                showName.selectAll();
-                return;
-            }
-        }
-
-        // MODIFIES: this
-        // EFFECTS: save the newly added tv show into the file
-        public void saveShowIntoFile() {
-            try {
-                Writer writer = new Writer(new File(LIST_FILE));
-                writer.write(wholeList);
-                writer.close();
-            } catch (FileNotFoundException e) {
-                System.out.println("Unable to save the show list to " + LIST_FILE);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                // this is due to a programming error
-            }
-        }
-
-        // MODIFIES: this
-        // EFFECTS: reset the text fields
-        public void resetTextField() {
-            showName.requestFocusInWindow();
-            showName.setText("");
-            showCategory.requestFocusInWindow();
-            showCategory.setText("");
-        }
-
-        // EFFECTS: check if the input name is already contained in the list
-        private boolean alreadyInList(String name) {
-            return listModel.contains(name);
-        }
-
-        // EFFECTS: enable the button for add a show
-        private void enableButton() {
-            if (!alreadyEnabled) {
-                addButton.setEnabled(true);
-            }
-        }
-
-        // EFFECTS:
-        private boolean handleEmptyTextField(DocumentEvent e) {
-            if (e.getDocument().getLength() <= 0) {
-                addButton.setEnabled(false);
-                alreadyEnabled = false;
-                return true;
-            }
-            return false;
-        }
-
-        //Required by DocumentListener.
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            enableButton();
-        }
-
-        //Required by DocumentListener.
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            handleEmptyTextField(e);
-        }
-
-        //Required by DocumentListener.
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            if (!handleEmptyTextField(e)) {
-                enableButton();
-            }
-        }
-
-        public void playSound() {
-            try {
-                AudioInputStream audioInputStream = AudioSystem
-                        .getAudioInputStream(new File(SOUND_FILE));
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-            } catch (Exception ex) {
-                System.out.println("Error with playing sound.");
-                ex.printStackTrace();
-            }
-        }
+                        .addComponent(showName).addComponent(showCategory)
+                        .addComponent(this.myActionListener.addButton))
+                .addComponent(this.myActionListener.saveButton));
     }
 
 }
