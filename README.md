@@ -33,9 +33,11 @@ really want to watch something, I can quickly search one from the collections th
 # Phase 4: Task 2
 - **Task completed**: test and design a class that is robust
 - **Classes and methods involved**: removeShow and showByCategory in ShowList class, their corresponding tests in the 
-  ShowListTest test class, and showByCategory in the ShowListUI class (the removeShow method is not affected by the
-  additional exception because it has been moved to the GUI part)
-- **Exception added**: ShowCannotBeFoundException
+  ShowListTest test class, and showByCategory in the ShowListUI class (the removeShow method which used to be part of UI
+  is not affected by the additional exception because it has been moved to the GUI part in Phase 3)
+- **Exception added**: ShowCannotBeFoundException. I added this exception because it used to be a REQUIRES assuming that
+  the user remembers and deals with shows in the list only, but it is more realistic that sometimes an input show cannot 
+  be found in the file.
 
 # Phase 4: Task 3
 - **Change 1**: At first I had an inner class of MyActionListener inside ShowGUI, but gradually I found that the ShowGUI
