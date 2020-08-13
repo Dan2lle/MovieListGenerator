@@ -31,21 +31,22 @@ really want to watch something, I can quickly search one from the collections th
 - The state of the application **automatically reloads** because I think it makes more sense
 
 # Phase 4: Task 2
-- Task completed: test and design a class that is robust
-- Classes and methods involved: removeShow and showByCategory in ShowList class, their corresponding tests in the 
-  ShowListTest test class, and showByCategory in the ShowListUI class
-- Exception added: ShowCannotBeFoundException
+- **Task completed**: test and design a class that is robust
+- **Classes and methods involved**: removeShow and showByCategory in ShowList class, their corresponding tests in the 
+  ShowListTest test class, and showByCategory in the ShowListUI class (the removeShow method is not affected by the
+  additional exception because it has been moved to the GUI part)
+- **Exception added**: ShowCannotBeFoundException
 
 # Phase 4: Task 3
-- Change 1: At first I had an inner class of MyActionListener inside ShowGUI, but gradually I found that the ShowGUI
+- **Change 1**: At first I had an inner class of MyActionListener inside ShowGUI, but gradually I found that the ShowGUI
             class became quite long and had two different main tasks(set up for both GUI and the ActionListener). So I 
             decided to extract MyActionListener into a separate class from ShowGUI to improve cohesion. Although I 
             noticed that MyActionListener still has some calls on ShowGUI(remaining some coupling between these two
             classes), I believe the code is more organized from what it was in Phase 3.
-- Change 2: Since I need to have TV shows listed in both the console and GUI, it makes sense to display the information
-            using the same format. Before I just have two strings under each class (one to print in the console, and one
-            to display on the GUI panel), but it exposes to future mistakes that when I want to change how the TV shows 
-            are displayed, I may change the format in one place but forget the other. In order to keep the consistency 
-            and duplicated codes in the project, I added a display() method in the TVShow class which can be called from
-            both ShowListUI and ShowGUI.
-- Change 3: In MyActionListener classes, I extracted many small helper methods to make the code more readable
+- **Change 2**: Since I need to have TV shows listed in both the console and GUI, it makes sense to display the 
+            information using the same format. Before I just have two strings under each class (one to print in the 
+            console, and one to display on the GUI panel), but it exposes to future mistakes that when I want to change 
+            how the TV shows are displayed, I may change the format in one place but forget the other. In order to keep 
+            the consistency and duplicated codes in the project, I added a display() method in the TVShow class which 
+            can be called from both ShowListUI and ShowGUI.
+- **Change 3**: In MyActionListener classes, extracted many small helper methods to make the code more readable
