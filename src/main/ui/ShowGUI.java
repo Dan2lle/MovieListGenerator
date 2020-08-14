@@ -13,7 +13,7 @@ import java.io.IOException;
 // used the ListDemo project as a source of code for this class
 // Represents a GUI for the user story of adding a show to the list
 public class ShowGUI extends JPanel  {
-    public MyActionListener myActionListener;
+    private MyActionListener myActionListener;
     private JLabel nameLabel = new JLabel("Please enter the name below:");
     private JLabel categoryLabel = new JLabel("Please enter the category below:");
     public JTextField showName;

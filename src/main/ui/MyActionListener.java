@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
 public class MyActionListener implements java.awt.event.ActionListener, DocumentListener {
-    public DefaultListModel<String> listModel = new DefaultListModel<>();
+    private DefaultListModel<String> listModel = new DefaultListModel<>();
     public JList<String> jlist = new JList<>(listModel);
     private static final String LIST_FILE = "data/realShowList";
     private boolean alreadyEnabled = false;
