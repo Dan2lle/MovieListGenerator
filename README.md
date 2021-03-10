@@ -52,4 +52,4 @@ really want to watch something, I can quickly search one from the collections th
             the consistency and duplicated codes in the project, I added a display() method in the TVShow class which 
             can be called from both ShowListUI and ShowGUI.
 - **Change 3**: In MyActionListener classes, extracted many small helper methods to make the code more readable, and I 
-            believe it also helps to improve my code design
+            believe it also helps to improve my code design# MovieListGenerator
